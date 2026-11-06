@@ -1,26 +1,279 @@
 @import "tailwindcss";
 
+/*
+ * OM Telecom design tokens
+ * Accent colours are sampled from the supplied logo:
+ *   orange ring / ribbon  ≈ #F95D07 / #FC440A
+ *   blue "M"              ≈ #3590FE
+ *   navy outline/tagline  ≈ #16245A
+ * The page itself stays warm-neutral so product photography leads.
+ */
+@theme {
+  --color-paper: #f6f3ee;
+  --color-paper-2: #efeae2;
+  --color-card: #fbfaf7;
+  --color-ink: #15171c;
+  --color-ink-2: #3a3d45;
+  --color-muted: #6a6c73;
+  --color-line: #ded8ce;
+  --color-line-strong: #c9c1b4;
+  --color-saffron: #ee5a0c;
+  --color-saffron-deep: #c94403;
+  --color-navy: #16245a;
+  --color-sky: #2f80ed;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: clip; /* guard against any stray horizontal overflow on small screens */
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-saffron);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-saffron);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Type helpers ---------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.display {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+.serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Thin rule with a saffron tick, used as a section separator */
+.rule-tick {
+  position: relative;
+  height: 1px;
+  background: var(--color-line);
+}
+.rule-tick::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 48px;
+  height: 3px;
+  background: var(--color-saffron);
+}
+
+/* Underline link animation */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s var(--ease-out-quint);
+}
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* ---------- Scroll reveal (only hides when JS is confirmed) ---------- */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s var(--ease-out-quint),
+    transform 0.9s var(--ease-out-quint);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Image wipe reveal — an overlay slides away. (A clip-path on the observed
+   element would stop IntersectionObserver and lazy image loading from firing.)
+   Set --mask-bg on dark sections so the overlay matches the background. */
+.reveal-mask {
+  isolation: isolate;
+}
+html.js .reveal-mask::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--mask-bg, var(--color-paper));
+  transform-origin: 50% 0%;
+  transition: transform 1.2s var(--ease-out-quint);
+  transition-delay: var(--reveal-delay, 0ms);
+  pointer-events: none;
+}
+html.js .reveal-mask.is-visible::after {
+  transform: scaleY(0);
+}
+
+/* Hero entrance — pure CSS so it runs even before hydration */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes unveil {
+  from {
+    clip-path: inset(8% 8% 8% 8% round 4px);
+    transform: scale(1.06);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 4px);
+    transform: none;
+  }
+}
+.hero-rise {
+  animation: rise 1s var(--ease-out-quint) both;
+  animation-delay: calc(var(--intro-offset, 0ms) + var(--d, 0ms));
+}
+.hero-unveil {
+  animation: unveil 1.4s var(--ease-out-quint) both;
+  animation-delay: calc(var(--intro-offset, 0ms) + var(--d, 0ms));
+}
+
+/* ---------- Logo intro overlay ---------- */
+@keyframes intro-mark {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+    clip-path: circle(0% at 30% 45%);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: circle(80% at 30% 45%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: circle(100% at 30% 45%);
+  }
+}
+@keyframes intro-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes intro-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-paper);
+  pointer-events: none; /* never blocks interaction */
+  animation: intro-out 0.6s var(--ease-out-quint) 1.5s forwards;
+}
+.intro__mark {
+  animation: intro-mark 1.1s var(--ease-out-quint) both;
+}
+.intro__bar {
+  transform-origin: left;
+  animation: intro-bar 1.3s var(--ease-out-quint) 0.1s both;
+}
+html.intro-seen .intro {
+  display: none;
+}
+html:not(.intro-seen) {
+  --intro-offset: 1300ms;
+}
+
+/* Marquee for brand strip */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 38s linear infinite;
+}
+.marquee-wrap:hover .marquee {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbars on snap rails while keeping them scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .intro {
+    display: none;
+  }
+  html:not(.intro-seen) {
+    --intro-offset: 0ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  html.js .reveal-mask::after {
+    display: none;
+  }
 }
