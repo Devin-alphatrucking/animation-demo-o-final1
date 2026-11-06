@@ -90,12 +90,12 @@ export function SiteHeader() {
         <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label={`${business.legalName} — home`}>
           <Image
             src="/images/brand/om-mark.webp"
-            width={1110}
-            height={548}
+            width={1103}
+            height={612}
             alt=""
             preload
             sizes="88px"
-            className="h-9 w-auto lg:h-10"
+            className="h-10 w-auto lg:h-11"
           />
           <span className="flex flex-col leading-none">
             <span className="text-[15px] font-semibold tracking-tight">Telecom</span>
