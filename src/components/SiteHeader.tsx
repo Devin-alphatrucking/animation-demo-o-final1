@@ -18,7 +18,7 @@ export function SiteHeader() {
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const headerRef = useRef<HTMLElement>(null);
-  const [menuTop, setMenuTop] = useState(64);
+  const [menuTop, setMenuTop] = useState(72);
 
   // Close the menu whenever the route changes
   const [lastPath, setLastPath] = useState(pathname);
@@ -86,21 +86,18 @@ export function SiteHeader() {
             : "bg-paper"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-6 px-4 sm:px-6 lg:h-[72px] lg:px-10">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label={`${business.legalName} — home`}>
+      <div className="mx-auto flex h-[72px] max-w-[1440px] items-center gap-6 px-4 sm:px-6 lg:h-[88px] lg:px-10">
+        <Link href="/" className="flex shrink-0 items-center" aria-label={`${business.legalName} — home`}>
+          {/* The complete official logo, uncropped */}
           <Image
-            src="/images/brand/om-mark.webp"
-            width={1103}
-            height={612}
-            alt=""
+            src={business.logo.src}
+            width={business.logo.width}
+            height={business.logo.height}
+            alt={business.logo.alt}
             preload
-            sizes="88px"
-            className="h-10 w-auto lg:h-11"
+            sizes="(min-width: 1024px) 100px, 80px"
+            className="h-[60px] w-auto lg:h-[74px]"
           />
-          <span className="flex flex-col leading-none">
-            <span className="text-[15px] font-semibold tracking-tight">Telecom</span>
-            <span className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.18em] text-muted">LLP</span>
-          </span>
         </Link>
 
         <nav aria-label="Primary" className="ml-auto hidden lg:block">

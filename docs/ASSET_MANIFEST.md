@@ -18,9 +18,9 @@ No AI-generated images, synthetic renders, CSS phone mockups or competitor photo
 | --- | --- | --- | --- |
 | `brand/om-telecom-logo.webp` (1100×839) | Logo supplied in chat by the owner | Supplied by owner | White background removed (edge flood-fill), trimmed. Used in footer, about page, intro. |
 | `brand/om-telecom-logo.png` | Same | Supplied by owner | Transparent master (not loaded by pages). |
-| `brand/om-mark.webp` | Crop of the supplied logo ("OM" mark) | Supplied by owner | Header mark, proportions preserved. |
+| Header | Uses the complete `brand/om-telecom-logo.webp`, uncropped | Supplied by owner | |
 | `brand/og-image.png` (1200×630) | Supplied logo on brand paper colour | Supplied by owner | Open Graph / social card. |
-| `src/app/icon.png`, `src/app/apple-icon.png` | Crop of the "O" mascot from the supplied logo | Supplied by owner | Favicon / touch icon. |
+| `src/app/icon.png`, `src/app/apple-icon.png` | Complete supplied logo fitted into a square (no crop) | Supplied by owner | Favicon / touch icon. |
 
 ## Product photography
 

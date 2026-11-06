@@ -92,7 +92,7 @@ export function Catalogue({ items, lockedBrand }: { items: Product[]; lockedBran
   return (
     <div>
       {/* ── Filter bar ── */}
-      <div className="sticky top-16 z-30 -mx-4 border-y border-line bg-paper/95 px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6 lg:top-[72px] lg:-mx-10 lg:px-10">
+      <div className="sticky top-[72px] z-30 -mx-4 border-y border-line bg-paper/95 px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6 lg:top-[88px] lg:-mx-10 lg:px-10">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-3">
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
             <div className="relative md:w-[340px]">
